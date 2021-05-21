@@ -1,4 +1,5 @@
 #include "graph.hpp"
+#include <time.h>
 
 int main(){
  int n,m;
@@ -19,10 +20,31 @@ int main(){
   E2[u][v] = E2[v][u] = true;
  }
  graph g2( E2 );
+ clock_t start,end;
+ double time;
+ 
+ start = clock();
+ g1.Isomorphism_Brute_Force(g2);
+ end= clock();
+ time = static_cast<double> (end-start) / CLOCKS_PER_SEC * 1.0;
+ std::cout << "time = " << time << " [sec]" << std::endl;
+ 
+ g1 = graph( E1 );
+ g2 = graph( E2 );
+ start = clock();
  g1.Isomorphism(g2);
- //g1.Isomorphism_Brute_Force(g2);
+ end= clock();
+ time = static_cast<double> (end-start) / CLOCKS_PER_SEC * 1.0;
+ std::cout << "time = " << time << " [sec]" << std::endl;
+ 
+ g1 = graph( E1 );
+ g2 = graph( E2 );
+ start = clock();
  std::cout<<g1.Cert1()<<std::endl;
  std::cout<<g2.Cert1()<<std::endl;
+ end= clock();
+ time = static_cast<double> (end-start) / CLOCKS_PER_SEC * 1.0;
+ std::cout << "time = " << time << " [sec]" << std::endl;
 
  return 0;
 }

@@ -254,12 +254,14 @@ std::string graph::Cert1() {
     s += "0";
    }
   }
+ /*
  for(int i= 0; i< n ; i++ ){
   if(i != 0 ) std::cout<<" ";
   std::cout<<mu[i];
  }
  std::cout<<std::endl;
  std::cout<<num<<std::endl;
+ */
  return s;
 }
 
