@@ -6,6 +6,7 @@
 #include <set>
 #include <algorithm>
 #include <numeric>
+#include <functional>
 
 //String to permutation
 std::vector< int > stringtoarray( std::string C );
@@ -24,10 +25,10 @@ struct permutation {
   str = arraytostring();
  }
 
- permutation mult(permutation b);
+ permutation mult(permutation b);// a[ b [i] ]
  permutation inv();
  std::string arraytostring();
- int test( std::vector< std::vector< permutation > > &G);
+ int test( std::vector< std::set< permutation > > &G);
 
  bool operator < (const permutation b ) const {
   if( n != b.n ) {
@@ -36,7 +37,6 @@ struct permutation {
   }
   return str < b.str;
  }
-
  bool operator == (const permutation b ) const {
   return str == b.str;
  }
@@ -47,6 +47,9 @@ struct permutation {
 };
 //関数の宣言
 std::set< permutation > simplegen( int n , std::set< permutation > &Gamma );
+void run(int n,  std::vector< std::set< permutation > > &G , std::function<void(bool&)> use );
+void runbacktrack(int n, int l, std::vector< std::set< permutation > > &G, permutation g , std::function<void(bool&)> use , bool& DoneEarly);
+void List( int n , std::vector< std::set< permutation > > &G );
 
 
 permutation permutation::mult(permutation b) {
@@ -88,13 +91,32 @@ std::string permutation::arraytostring() {
  return C;
 }
 
-int permutation::test( std::vector< std::vector< permutation > > &G ){
+int permutation::test( std::vector< std::set< permutation > > &G ){
  for(int i = 0 ; i < n ; i++ ){
   int x = p[i];
-  
  }
  return n;
 }
+
+
+void run( int n ,std::vector< std::set< permutation > > &G , std::function< void(bool&) > use ){
+ bool DoneEarly = false;
+ std::vector< int > Ip(n);
+ iota( Ip.begin() , Ip.end() , 0 );
+ permutation I( Ip );
+ runbacktrack( n , 0 , G , I , use , DoneEarly );
+}
+void runbacktrack( int n , int l , std::vector< std::set< permutation > > &G, permutation g , std::function<void(bool&)> use , bool& DoneEarly ){
+ if( DoneEarly ) return;
+ if( l == n ) use(DoneEarly);
+ else {
+  for( auto h : G[l] ){
+   permutation fl = g.mult( h );
+   runbacktrack( n, l + 1 , G , fl , use , DoneEarly );
+  }
+ }
+}
+
 
 //関数の内容
 std::vector< int > stringtoarray( std::string C ){
