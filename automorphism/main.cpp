@@ -16,6 +16,8 @@ int main(){
  std::cout<<b.arraytostring()<<std::endl;
  std::cout<< a.mult( b ).arraytostring()<<std::endl;
  */
+ int n;
+ std::cin>>n;
  std::string s1,s2;
  std::cin>>s1>>s2;
  permutation a( s1 );
@@ -29,9 +31,18 @@ int main(){
  }
  std::cout<<"Gamma size is "<<Gamma.size()<<std::endl;
  */ 
- std::set< permutation > G = simplegen( 8 , Gamma );
- std::cout<<"G size is "<<G.size()<<std::endl;
- for( auto g: G ) std::cout<<g.str<<std::endl;
+ //std::set< permutation > G = simplegen( n , Gamma );
+ //std::cout<<"G size is "<<G.size()<<std::endl;
+ //for( auto g: G ) std::cout<<g.str<<std::endl;
+ 
+ //std::vector< std::set< permutation > > U = MakePermutationGroup( n , G );
+ std::vector< std::set< permutation > > U = gen( n , Gamma );
+ for( int i = 0 ; i < n ; i++ ){
+  std::cout<<"U[ "<< i <<" ]"<< std::endl;
+  for( auto g : U[i] ) std::cout<<g.str<<std::endl;
+ }
+ //std::cout<<"LIST"<<std::endl;
+ //List( n , U );
  return 0;
 }
 

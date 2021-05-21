@@ -29,6 +29,7 @@ struct permutation {
  permutation inv();
  std::string arraytostring();
  int test( std::vector< std::set< permutation > > &G);
+ 
 
  bool operator < (const permutation b ) const {
   if( n != b.n ) {
@@ -47,10 +48,15 @@ struct permutation {
 };
 //関数の宣言
 std::set< permutation > simplegen( int n , std::set< permutation > &Gamma );
-void run(int n,  std::vector< std::set< permutation > > &G , std::function<void(bool&)> use );
-void runbacktrack(int n, int l, std::vector< std::set< permutation > > &G, permutation g , std::function<void(bool&)> use , bool& DoneEarly);
+void run(int n,  std::vector< std::set< permutation > > &G ,
+  std::function<void(permutation&,bool&)> use , bool &DoneEarly );
+void runbacktrack(int n, int l, std::vector< std::set< permutation > > &G, 
+  permutation &g , std::function<void(permutation&,bool&)> use , bool& DoneEarly);
 void List( int n , std::vector< std::set< permutation > > &G );
-
+void ListUse(permutation &g , bool &DoneEarly);
+std::vector< std::set< permutation > > MakePermutationGroup( int n, std::set< permutation > &G );
+std::vector< std::set< permutation > > gen( int n , std::set< permutation > &Gamma );
+void enter( int n , permutation &g, std::vector< std::set< permutation > > &G);
 
 permutation permutation::mult(permutation b) {
  assert( n == b.n );
@@ -94,27 +100,91 @@ std::string permutation::arraytostring() {
 int permutation::test( std::vector< std::set< permutation > > &G ){
  for(int i = 0 ; i < n ; i++ ){
   int x = p[i];
+  bool exits = false;
+  for( auto h : G[i] ){
+   if( h.p[i] = x ){
+    permutation pi3 = ( h.inv() ).mult( *this );
+    //for( int j = 0 ; j < n ; j++ ) this->p[j] = pi3[j];
+    *this = pi3;
+    exits = true;
+   }
+  }
+  if( !exits ) return i;
  }
  return n;
 }
 
 
-void run( int n ,std::vector< std::set< permutation > > &G , std::function< void(bool&) > use ){
- bool DoneEarly = false;
+
+void run( int n ,std::vector< std::set< permutation > > &G ,
+  std::function< void(permutation&,bool&) > use, bool &DoneEarly ){
  std::vector< int > Ip(n);
  iota( Ip.begin() , Ip.end() , 0 );
  permutation I( Ip );
  runbacktrack( n , 0 , G , I , use , DoneEarly );
 }
-void runbacktrack( int n , int l , std::vector< std::set< permutation > > &G, permutation g , std::function<void(bool&)> use , bool& DoneEarly ){
+void runbacktrack( int n , int l , std::vector< std::set< permutation > > &G, 
+  permutation &g , std::function<void(permutation&,bool&)> use , bool& DoneEarly ){
  if( DoneEarly ) return;
- if( l == n ) use(DoneEarly);
+ if( l == n ) use(g,DoneEarly);
  else {
   for( auto h : G[l] ){
    permutation fl = g.mult( h );
    runbacktrack( n, l + 1 , G , fl , use , DoneEarly );
   }
  }
+}
+void List( int n , std::vector< std::set< permutation > > &G ){
+ bool DoneEarly = false;
+ run( n , G , ListUse , DoneEarly );
+}
+void ListUse( permutation &g, bool &DoneEarly ){
+ std::cout<<g.str<<std::endl;
+}
+std::vector< std::set< permutation > > MakePermutationGroup( int n , std::set< permutation > &G ){
+ std::vector< std::set< permutation > > Gi( n );// G , G_0 , G1 ,..., G_n-2
+ std::vector< std::set< permutation > > U( n );
+ Gi[0] = G;
+ for( int i = 1 ; i < n ; i++ ){
+  for( auto g : Gi[i-1] ){
+   if( g.p[i-1] == i-1 ) Gi[i].insert( g );
+  }
+ }
+ for( int i = 0 ; i < n ; i++ ){
+  std::vector< bool > no_use( n , true );
+  for( auto g: Gi[i] ){
+   if( no_use[ g.p[i] ] ){
+    U[i].insert( g );
+    no_use[ g.p[i] ] = false;
+   }
+  }
+ }
+ return U;
+}
+
+std::vector< std::set< permutation > > gen( int n , std::set< permutation > &Gamma ){
+ std::vector< int > Ip( n );
+ iota( Ip.begin() , Ip.end() , 0 );
+ permutation I( Ip );
+ std::vector< std::set< permutation > > G(n);
+ for(int i = 0 ; i < n ; i++ ) G[i].insert( I );
+ for( auto a : Gamma ) enter( n , a , G );
+ return G;
+}
+
+void enter( int n , permutation &g, std::vector< std::set< permutation > > &G ){
+ int i = g.test( G );
+ if( i == n ) return;
+ else {
+  std::cout<<i<<std::endl;
+  std::cout<<g.str<<std::endl;
+  G[i].insert( g );
+ }
+ for( int j = 0 ; j <= i ; j++ )
+  for( auto h : G[j] ){
+   permutation f = g.mult( h );
+   enter( n , f , G );
+  }
 }
 
 
