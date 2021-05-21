@@ -98,14 +98,18 @@ std::string permutation::arraytostring() {
 }
 
 int permutation::test( std::vector< std::set< permutation > > &G ){
+ permutation g( p );
  for(int i = 0 ; i < n ; i++ ){
-  int x = p[i];
+  int x = g.p[i];
+  //int x = p[i];
   bool exits = false;
   for( auto h : G[i] ){
    if( h.p[i] = x ){
-    permutation pi3 = ( h.inv() ).mult( *this );
+    permutation pi3 = ( h.inv() ).mult( g );
+    //permutation pi3 = ( h.inv() ).mult( *this );
     //for( int j = 0 ; j < n ; j++ ) this->p[j] = pi3[j];
-    *this = pi3;
+    g = pi3;
+    //*this = pi3;
     exits = true;
    }
   }
