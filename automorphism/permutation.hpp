@@ -28,7 +28,6 @@ struct permutation {
  permutation mult(permutation b);// a[ b [i] ]
  permutation inv();
  std::string arraytostring();
- int test( std::vector< std::set< permutation > > &G);
  
 
  bool operator < (const permutation b ) const {
@@ -57,6 +56,8 @@ void ListUse(permutation &g , bool &DoneEarly);
 std::vector< std::set< permutation > > MakePermutationGroup( int n, std::set< permutation > &G );
 std::vector< std::set< permutation > > gen( int n , std::set< permutation > &Gamma );
 void enter( int n , permutation &g, std::vector< std::set< permutation > > &G);
+int test(int n , permutation &g,  std::vector< std::set< permutation > > &G);
+void print_G( int n , std::vector< std::set< permutation > > &G );
 
 permutation permutation::mult(permutation b) {
  assert( n == b.n );
@@ -96,29 +97,6 @@ std::string permutation::arraytostring() {
  }
  return C;
 }
-
-int permutation::test( std::vector< std::set< permutation > > &G ){
- permutation g( p );
- for(int i = 0 ; i < n ; i++ ){
-  int x = g.p[i];
-  //int x = p[i];
-  bool exits = false;
-  for( auto h : G[i] ){
-   if( h.p[i] = x ){
-    permutation pi3 = ( h.inv() ).mult( g );
-    //permutation pi3 = ( h.inv() ).mult( *this );
-    //for( int j = 0 ; j < n ; j++ ) this->p[j] = pi3[j];
-    g = pi3;
-    //*this = pi3;
-    exits = true;
-   }
-  }
-  if( !exits ) return i;
- }
- return n;
-}
-
-
 
 void run( int n ,std::vector< std::set< permutation > > &G ,
   std::function< void(permutation&,bool&) > use, bool &DoneEarly ){
@@ -166,29 +144,73 @@ std::vector< std::set< permutation > > MakePermutationGroup( int n , std::set< p
  return U;
 }
 
+int test( int n , permutation &g, std::vector< std::set< permutation > > &G ){
+ //permutation g( p );
+ for(int i = 0 ; i < n ; i++ ){
+  int x = g.p[i];
+  //int x = p[i];
+  bool exits = false;
+  for( auto h : G[i] ){
+   if( h.p[i] == x ){
+    //permutation hinv = h.inv(); 
+    //permutation pi3 = hinv.mult( g );
+    permutation pi3 = ( h.inv() ).mult( g );
+    
+    /*
+    std::cout<<"i    : "<<i<<std::endl;
+    std::cout<<"x    : "<<x<<std::endl;
+    std::cout<<"h    : "<<h.str<<std::endl;
+    std::cout<<"hinv : "<<hinv.str<<std::endl;
+    std::cout<<"g    : "<<g.str<<std::endl;
+    std::cout<<"pi3  : "<<pi3.str<<std::endl;
+    */
+    //permutation pi3 = ( h.inv() ).mult( *this );
+    //for( int j = 0 ; j < n ; j++ ) this->p[j] = pi3[j];
+    g = pi3;
+
+    //*this = pi3;
+    exits = true;
+    break;
+   }
+  }
+  if( !exits ) return i;
+ }
+ return n;
+}
+
+
+
 std::vector< std::set< permutation > > gen( int n , std::set< permutation > &Gamma ){
  std::vector< int > Ip( n );
  iota( Ip.begin() , Ip.end() , 0 );
  permutation I( Ip );
  std::vector< std::set< permutation > > G(n);
  for(int i = 0 ; i < n ; i++ ) G[i].insert( I );
- for( auto a : Gamma ) enter( n , a , G );
+ for( auto a : Gamma )  enter( n , a , G );
  return G;
 }
 
 void enter( int n , permutation &g, std::vector< std::set< permutation > > &G ){
- int i = g.test( G );
+ //int i = g.test( G );
+ int i = test( n , g , G );
  if( i == n ) return;
  else {
+  G[i].insert( g );
+ 
+  /*
   std::cout<<i<<std::endl;
   std::cout<<g.str<<std::endl;
-  G[i].insert( g );
+  print_G( n , G );
+  std::cout<<std::endl;
+  */
  }
  for( int j = 0 ; j <= i ; j++ )
   for( auto h : G[j] ){
    permutation f = g.mult( h );
    enter( n , f , G );
+   //std::cout<<"FINISH"<<std::endl;
   }
+
 }
 
 
@@ -287,3 +309,9 @@ std::set< permutation > simplegen( int n , std::set< permutation > &Gamma ) {
  return res;
 }
 
+void print_G( int n , std::vector< std::set< permutation > > &G ){
+ for( int i = 0 ; i < n ; i++ ){
+  std::cout<<"U[ "<< i <<" ]"<< std::endl;
+  for( auto g : G[i] ) std::cout<<g.str<<std::endl;
+ }
+}

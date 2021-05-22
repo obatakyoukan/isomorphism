@@ -25,6 +25,10 @@ int main(){
  std::set< permutation > Gamma;
  Gamma.insert( s1 );
  Gamma.insert( s2 );
+ //std::vector< permutation > Gamma;
+ //Gamma.push_back( s1 );
+ //Gamma.push_back( s2 );
+ 
  /*
  for( auto g: Gamma ){
   std::cout<<g.n<<" : "<<g.str<<std::endl;
@@ -36,11 +40,25 @@ int main(){
  //for( auto g: G ) std::cout<<g.str<<std::endl;
  
  //std::vector< std::set< permutation > > U = MakePermutationGroup( n , G );
+ 
+ /*
+ std::vector< int > Ip(n);
+ iota( Ip.begin() , Ip.end() , 0 );
+ permutation I( Ip );
+ std::cout<<I.str<<std::endl;
+ std::cout<<(I.inv()).str<<std::endl;
+ std::cout<<b.str<<std::endl;
+ std::cout<<(I.inv() ).mult( b ).str<<std::endl;
+ */
+
  std::vector< std::set< permutation > > U = gen( n , Gamma );
+ print_G( n , U );
+ /*
  for( int i = 0 ; i < n ; i++ ){
   std::cout<<"U[ "<< i <<" ]"<< std::endl;
   for( auto g : U[i] ) std::cout<<g.str<<std::endl;
  }
+ */
  //std::cout<<"LIST"<<std::endl;
  //List( n , U );
  return 0;
