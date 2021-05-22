@@ -61,7 +61,7 @@ void print_G( int n , std::vector< std::set< permutation > > &G );
 
 void enter2( int n , permutation &g, permutation &beta, std::vector< std::set< permutation > > &G);
  int test2( int n , permutation &g, permutation &beta,  std::vector< std::set< permutation > > &G );
-void changebase( int n , permutation &beta, std::vector< std::set< permutation > > &G );
+void changebase( int n , permutation &beta, permutation &beta_dash , std::vector< std::set< permutation > > &G );
 
 
 permutation permutation::mult(permutation b) {
@@ -219,13 +219,12 @@ void enter2( int n , permutation &g, permutation &beta, std::vector< std::set< p
   }
 }
 
-void changebase( int n , permutation &beta, std::vector< std::set< permutation > > &G ){
+void changebase( int n , permutation &beta, permutation &beta_dash, std::vector< std::set< permutation > > &G ){
  std::vector< std::set< permutation > > H(n);
  std::vector< int > Ip( n );
  iota( Ip.begin() , Ip.end() , 0 );
  permutation I(Ip);
  for( int i = 0 ; i < n ; i++ ) H[i].insert( I );
- permutation beta_dash; //これどう変わるのか?
 
  for( int i = 0 ; i < n ; i++ ){
   for( auto g : G[i] ){
