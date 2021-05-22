@@ -56,8 +56,13 @@ void ListUse(permutation &g , bool &DoneEarly);
 std::vector< std::set< permutation > > MakePermutationGroup( int n, std::set< permutation > &G );
 std::vector< std::set< permutation > > gen( int n , std::set< permutation > &Gamma );
 void enter( int n , permutation &g, std::vector< std::set< permutation > > &G);
-int test(int n , permutation &g,  std::vector< std::set< permutation > > &G);
+ int test(int n , permutation &g,  std::vector< std::set< permutation > > &G);
 void print_G( int n , std::vector< std::set< permutation > > &G );
+
+void enter2( int n , permutation &g, permutation &beta, std::vector< std::set< permutation > > &G);
+ int test2( int n , permutation &g, permutation &beta,  std::vector< std::set< permutation > > &G );
+void changebase( int n , permutation &beta, std::vector< std::set< permutation > > &G );
+
 
 permutation permutation::mult(permutation b) {
  assert( n == b.n );
@@ -144,42 +149,6 @@ std::vector< std::set< permutation > > MakePermutationGroup( int n , std::set< p
  return U;
 }
 
-int test( int n , permutation &g, std::vector< std::set< permutation > > &G ){
- //permutation g( p );
- for(int i = 0 ; i < n ; i++ ){
-  int x = g.p[i];
-  //int x = p[i];
-  bool exits = false;
-  for( auto h : G[i] ){
-   if( h.p[i] == x ){
-    //permutation hinv = h.inv(); 
-    //permutation pi3 = hinv.mult( g );
-    permutation pi3 = ( h.inv() ).mult( g );
-    
-    /*
-    std::cout<<"i    : "<<i<<std::endl;
-    std::cout<<"x    : "<<x<<std::endl;
-    std::cout<<"h    : "<<h.str<<std::endl;
-    std::cout<<"hinv : "<<hinv.str<<std::endl;
-    std::cout<<"g    : "<<g.str<<std::endl;
-    std::cout<<"pi3  : "<<pi3.str<<std::endl;
-    */
-    //permutation pi3 = ( h.inv() ).mult( *this );
-    //for( int j = 0 ; j < n ; j++ ) this->p[j] = pi3[j];
-    g = pi3;
-
-    //*this = pi3;
-    exits = true;
-    break;
-   }
-  }
-  if( !exits ) return i;
- }
- return n;
-}
-
-
-
 std::vector< std::set< permutation > > gen( int n , std::set< permutation > &Gamma ){
  std::vector< int > Ip( n );
  iota( Ip.begin() , Ip.end() , 0 );
@@ -190,28 +159,82 @@ std::vector< std::set< permutation > > gen( int n , std::set< permutation > &Gam
  return G;
 }
 
+int test( int n , permutation &g, std::vector< std::set< permutation > > &G ){
+ for(int i = 0 ; i < n ; i++ ){
+  int x = g.p[i];
+  bool exits = false;
+  for( auto h : G[i] ){
+   if( h.p[i] == x ){
+    permutation pi3 = ( h.inv() ).mult( g );
+    g = pi3;
+    exits = true;
+    break;
+   }
+  }
+  if( !exits ) return i;
+ }
+ return n;
+}
+
 void enter( int n , permutation &g, std::vector< std::set< permutation > > &G ){
- //int i = g.test( G );
  int i = test( n , g , G );
  if( i == n ) return;
  else {
   G[i].insert( g );
- 
-  /*
-  std::cout<<i<<std::endl;
-  std::cout<<g.str<<std::endl;
-  print_G( n , G );
-  std::cout<<std::endl;
-  */
  }
  for( int j = 0 ; j <= i ; j++ )
   for( auto h : G[j] ){
    permutation f = g.mult( h );
    enter( n , f , G );
-   //std::cout<<"FINISH"<<std::endl;
   }
-
 }
+
+int test2( int n , permutation &g, permutation &beta, std::vector< std::set< permutation > > &G ){
+ for(int i = 0 ; i < n ; i++ ){
+  int x = g.p[ beta.p[i] ];
+  bool exits = false;
+  for( auto h : G[i] ){
+   if( h.p[ beta.p[i] ] == x ){
+    permutation pi3 = ( h.inv() ).mult( g );
+    g = pi3;
+    exits = true;
+    break;
+   }
+  }
+  if( !exits ) return i;
+ }
+ return n;
+}
+
+void enter2( int n , permutation &g, permutation &beta, std::vector< std::set< permutation > > &G ){
+ int i = test2( n , g , beta , G );
+ if( i == n ) return;
+ else {
+  G[i].insert( g );
+ }
+ for( int j = 0 ; j <= i ; j++ )
+  for( auto h : G[j] ){
+   permutation f = g.mult( h );
+   enter2( n , f , beta , G );
+  }
+}
+
+void changebase( int n , permutation &beta, std::vector< std::set< permutation > > &G ){
+ std::vector< std::set< permutation > > H(n);
+ std::vector< int > Ip( n );
+ iota( Ip.begin() , Ip.end() , 0 );
+ permutation I(Ip);
+ for( int i = 0 ; i < n ; i++ ) H[i].insert( I );
+ permutation beta_dash; //これどう変わるのか?
+
+ for( int i = 0 ; i < n ; i++ ){
+  for( auto g : G[i] ){
+   enter2( n , g , beta_dash , H );
+  }
+ }
+ G = H;
+}
+
 
 
 //関数の内容
