@@ -23,12 +23,14 @@ int main(){
  clock_t start,end;
  double time;
  
+ std::cout<<"Brute Force"<<std::endl;
  start = clock();
  g1.Isomorphism_Brute_Force(g2);
  end= clock();
  time = static_cast<double> (end-start) / CLOCKS_PER_SEC * 1.0;
  std::cout << "time = " << time << " [sec]" << std::endl;
  
+ std::cout<<"Isomorphism devide"<<std::endl;
  g1 = graph( E1 );
  g2 = graph( E2 );
  start = clock();
@@ -37,11 +39,22 @@ int main(){
  time = static_cast<double> (end-start) / CLOCKS_PER_SEC * 1.0;
  std::cout << "time = " << time << " [sec]" << std::endl;
  
+ std::cout<<"Cert1"<<std::endl;
  g1 = graph( E1 );
  g2 = graph( E2 );
  start = clock();
  std::cout<<g1.Cert1()<<std::endl;
  std::cout<<g2.Cert1()<<std::endl;
+ end= clock();
+ time = static_cast<double> (end-start) / CLOCKS_PER_SEC * 1.0;
+ std::cout << "time = " << time << " [sec]" << std::endl;
+
+ std::cout<<"Cert2"<<std::endl;
+ g1 = graph( E1 );
+ g2 = graph( E2 );
+ start = clock();
+ std::cout<<g1.Cert2()<<std::endl;
+ std::cout<<g2.Cert2()<<std::endl;
  end= clock();
  time = static_cast<double> (end-start) / CLOCKS_PER_SEC * 1.0;
  std::cout << "time = " << time << " [sec]" << std::endl;
