@@ -90,6 +90,8 @@ class graph {
   void Canon2( permutation &beta, std::vector< std::set< permutation > > &G, std::map< int , std::set<int> > &P, std::vector<int> &mu , bool &BestExist );
   //Algorithm 7.10
   std::string Cert2();
+  std::string Cert3();
+  std::string Cert4();
 
   void make_deg();
   int getdeg(int i) { return deg[i]; } 
@@ -375,7 +377,71 @@ std::string graph::Cert2() {
  return s;
 }
 
+std::string graph::Cert3() {
+ std::map<int , std::set<int> > P;
+ std::vector<int> mu( n );
+ iota( mu.begin() , mu.end() , 0 );
+ //for(int i = 0 ; i < n ; i++ ) P[0].insert( i );
+ std::map< std::tuple<int,Vector> , std::vector<int> > X = getPartitions();
+ int index = 0;
+ for( auto it : X ) {
+  for( auto v : it.second ) P[ index ].insert( v );
+  index++;
+ }
 
+ bool BestExist = false;
+ Canon1( P , mu , BestExist );
+ //unsigned long long int num = 0;
+ std::string s = "";
+ for(int i = 1 ; i < n ; i++ )
+  for(int j = 0 ; j < i ; j++ )
+  {
+   //num <<= 1;
+   if( is_edge( mu[i] , mu[j] ) ){
+    s += "1";
+    //num++;
+   }else{
+    s += "0";
+   }
+  }
+ return s;
+}
+
+std::string graph::Cert4() {
+ std::map<int , std::set<int> > P;
+ std::vector<int> mu( n );
+ iota( mu.begin() , mu.end() , 0 );
+ //for(int i = 0 ; i < n ; i++ ) P[0].insert( i ); 
+ std::map< std::tuple<int,Vector> , std::vector<int> > X = getPartitions();
+ int index = 0;
+ for( auto it : X ) {
+  for( auto v : it.second ) P[ index ].insert( v );
+  index++;
+ }
+ 
+ bool BestExist = false;
+ std::vector< int > Ip(n);
+ iota( Ip.begin() , Ip.end() , 0 );
+ permutation I( Ip );
+ std::vector< std::set< permutation > > G(n);
+ for( int i = 0 ; i < n ; i++ ) G[i].insert( I );
+ Canon2( I , G , P , mu , BestExist );
+
+ //unsigned long long int num = 0;
+ std::string s = "";
+ for(int i = 1 ; i < n ; i++ )
+  for(int j = 0 ; j < i ; j++ )
+  {
+   //num <<= 1;
+   if( is_edge( mu[i] , mu[j] ) ){
+    s += "1";
+    //num++;
+   }else{
+    s += "0";
+   }
+  }
+ return s;
+}
 
 //Algorithm 7.1
 std::map< std::tuple<int,Vector> , std::vector<int> > graph::getPartitions() {
@@ -443,6 +509,7 @@ bool graph::Isomorphism( graph& G ) {
  iota( f.begin() , f.end() , 0 );
  return FindIsomorphism( 0 , W , f, G , XX , YY );
 }
+
 bool graph::Isomorphism_Brute_Force( graph& G ) { //Brute Force algorithm 
  bool res = false;
  do {

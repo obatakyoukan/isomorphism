@@ -29,7 +29,7 @@ int main(){
  }
  */
  
- std::cout<<g.Cert1()<<std::endl;
+ std::cout<<g.Cert4()<<std::endl;
 
  /*
  std::map< int , std::set< int > > A;

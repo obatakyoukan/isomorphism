@@ -10,6 +10,7 @@ int main(){
   E[u][v] = E[v][u] = true;
  }
  graph g( E );
+ 
  /*
  std::map< std::tuple< int , Vector > , std::vector<int> > X = g.getPartitions();
  std::cout<<"The Size of X is "<<X.size()<<std::endl;
@@ -24,7 +25,10 @@ int main(){
   V.print();
  }
  */
- std::cout<<g.Cert2()<<std::endl;
+ //std::cout<<g.Cert1()<<std::endl;
+ //std::cout<<g.Cert2()<<std::endl;
+ std::cout<<g.Cert3()<<std::endl;
+ std::cout<<g.Cert4()<<std::endl;
 
  /*
  std::map< int , std::set< int > > A;
