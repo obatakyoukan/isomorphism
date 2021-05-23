@@ -41,18 +41,25 @@ int main(){
  
  //std::vector< std::set< permutation > > U = MakePermutationGroup( n , G );
  
- /*
+ 
  std::vector< int > Ip(n);
  iota( Ip.begin() , Ip.end() , 0 );
  permutation I( Ip );
+ /*
  std::cout<<I.str<<std::endl;
  std::cout<<(I.inv()).str<<std::endl;
  std::cout<<b.str<<std::endl;
  std::cout<<(I.inv() ).mult( b ).str<<std::endl;
  */
 
+
  std::vector< std::set< permutation > > U = gen( n , Gamma );
  print_G( n , U );
+ permutation Ibeta = I;
+ std::cout<<"Change Base"<<std::endl;
+ changebase( n , I , Ibeta , U );
+ print_G( n , U );
+
  /*
  for( int i = 0 ; i < n ; i++ ){
   std::cout<<"U[ "<< i <<" ]"<< std::endl;
