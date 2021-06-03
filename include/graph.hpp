@@ -6,8 +6,11 @@
 #include <numeric>
 #include <algorithm>
 #include <string>
-#include "permutation.hpp"
 
+#include "permutation.hpp"
+#include "Vector.hpp"
+#include "Setlib.hpp"
+#include "CompResult.hpp"
 
 class graph {
  private:

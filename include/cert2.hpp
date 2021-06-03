@@ -1,5 +1,8 @@
 
 #include "graph_lib.hpp"
+#include "permutation_lib.hpp"
+#include "permutation_function.hpp"
+
 //Algorithm 7.9
 void graph::Canon2( permutation &beta, std::vector< std::set<permutation> > &G , std::map<int , std::set< int > > &P , std::vector<int> &mu , bool &BestExist ){
  std::map< int , std::set<int> > Q = REFINE( P );
