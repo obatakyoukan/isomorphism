@@ -1,12 +1,18 @@
-
+#ifndef CERT2_HPP
+#define CERT2_HPP
+#include "graph.hpp"
 #include "graph_lib.hpp"
-#include "permutation_lib.hpp"
-#include "permutation_function.hpp"
+#include "graph_print.hpp"
+#include "refine.hpp"
+#include "basic_function.hpp"
+#include "CompResult.hpp"
+#include "permutation.hpp"
+#include "permutation_library.hpp"
 
-//Algorithm 7.9
+
 void graph::Canon2( permutation &beta, std::vector< std::set<permutation> > &G , std::map<int , std::set< int > > &P , std::vector<int> &mu , bool &BestExist ){
  std::map< int , std::set<int> > Q = REFINE( P );
- //print_partition( Q );
+ //basic_function::print_partition( Q );
  int l = -1;
  for(auto i : Q )
   if( i.second.size() > 1 ){
@@ -35,7 +41,7 @@ void graph::Canon2( permutation &beta, std::vector< std::set<permutation> > &G ,
    std::vector< int > pi2tmp( n );
    for(int i = 0 ; i < n ; i++ ) pi2tmp[ pi[i] ] = mu[i];
    permutation pi2( pi2tmp );
-   enter2( n , pi2  , beta , G );
+   permutation_function::enter2( n , pi2  , beta , G );
   }
  }else if( Res != CompResult::Worse ){
   std::set<int> C = Q[l];
@@ -68,7 +74,7 @@ void graph::Canon2( permutation &beta, std::vector< std::set<permutation> > &G ,
      beta_dashtmp[j] = i;
     }
    permutation beta_dash( beta_dashtmp );
-   changebase( n , beta , beta_dash , G );
+   permutation_function::changebase( n , beta , beta_dash , G );
    for( auto g : G[l] ) {
     no_check[ g.p[u]  ] = true;
    }
@@ -76,7 +82,6 @@ void graph::Canon2( permutation &beta, std::vector< std::set<permutation> > &G ,
  }
 }
 
-//Algorithm 7.10
 std::string graph::Cert2() {
  std::map<int , std::set<int> > P;
  std::vector<int> mu( n );
@@ -112,7 +117,6 @@ std::string graph::Cert4() {
  std::map<int , std::set<int> > P;
  std::vector<int> mu( n );
  iota( mu.begin() , mu.end() , 0 );
- //for(int i = 0 ; i < n ; i++ ) P[0].insert( i ); 
  std::map< std::tuple<int,Vector> , std::vector<int> > X = getPartitions();
  int index = 0;
  for( auto it : X ) {
@@ -127,7 +131,6 @@ std::string graph::Cert4() {
  std::vector< std::set< permutation > > G(n);
  for( int i = 0 ; i < n ; i++ ) G[i].insert( I );
  Canon2( I , G , P , mu , BestExist );
-
  //unsigned long long int num = 0;
  std::string s = "";
  for(int i = 1 ; i < n ; i++ )
@@ -144,5 +147,4 @@ std::string graph::Cert4() {
  return s;
 }
 
-
-
+#endif

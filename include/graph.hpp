@@ -1,11 +1,15 @@
+#ifndef GRAPH_HPP
+#define GRAPH_HPP
 
 #include <iostream>
+#include <set>
 #include <map>
 #include <vector>
 #include <tuple>
 #include <numeric>
 #include "CompResult.hpp"
 #include "Vector.hpp"
+#include "permutation.hpp"
 
 class graph {
  private:
@@ -17,7 +21,7 @@ class graph {
   graph() {}
   graph( int n );
   graph( std::vector< std::vector< bool > > &_g );
-  
+
   int size();
   bool is_edge( int x, int y );
   void make_deg();
@@ -25,11 +29,32 @@ class graph {
 
   bool compare( graph& G);
   bool Isomorphism_Brute_Force( graph& G);
-  
+
   //Algorithm 7.1
   std::map< std::tuple<int, Vector> , std::vector<int> > getPartitions();
   bool Isomorphism( graph& G );
   bool FindIsomorphism( int l , std::vector<int> &W , std::vector<int> &f, graph& G, std::vector< std::vector<int> > &X, std::vector< std::vector<int> > &Y);
+
+  //Algorithm 7.5
+  std::map<int, std::set< int > > REFINE( std::map<int, std::set< int > > &A );
+  void SpritAndUpdate( std::map<int, std::set< int > > &B , int j , 
+    int &N , std::set< int > &U, std::map<int, std::set< int > > &S, std::set< int > &T);
+  int AbsAndSet( int u , std::set< int > &T );// | T and N_g(u) |
+
+  //Algorithm 7.6
+  CompResult Compare( std::vector< int > &mu , std::vector< int > &pi, int l ); 
+
+  //Algorithm 7.7
+  void Canon1( std::map< int , std::set<int> > &P, std::vector<int> &mu, bool &BestExist );
+  //Algorithm 7.8
+  std::string Cert1();
+  //Algorithm 7.9
+  void Canon2( permutation &beta, std::vector< std::set< permutation > > &G, std::map< int , std::set<int> > &P, std::vector<int> &mu , bool &BestExist );
+  //Algorithm 7.10
+  std::string Cert2();
+  std::string Cert3();
+  std::string Cert4();
+
 
   void print();
   void print_V();
@@ -63,4 +88,4 @@ void graph::make_deg() {
 int graph::getdeg(int i ) { return deg[i]; }
 
 
-
+#endif

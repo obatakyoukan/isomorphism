@@ -1,4 +1,6 @@
-
+#ifndef ISOMORPHISM_HPP
+#define ISOMORPHISM_HPP
+#include "graph.hpp"
 #include "graph_lib.hpp"
 
 bool graph::FindIsomorphism( int l , std::vector< int > &W, std::vector< int > &f , graph& G, std::vector< std::vector<int> > &X, std::vector< std::vector<int> >  &Y ){
@@ -27,7 +29,8 @@ bool graph::FindIsomorphism( int l , std::vector< int > &W, std::vector< int > &
 bool graph::Isomorphism( graph& G ) {
  std::map< std::tuple<int , Vector> , std::vector<int> > X = getPartitions();
  std::map< std::tuple<int , Vector> , std::vector<int> > Y = G.getPartitions();
- if( n != G.n ) return false;
+ if( n != G.size() ) return false;
+ //if( n != G.n ) return false;
  if( X.size() != Y.size() ) return false;// G1 and G2 are not isomorphic
  for( auto i : X ) {
   if( i.second.size() != Y[ i.first ].size() ) return false;
@@ -53,4 +56,4 @@ bool graph::Isomorphism( graph& G ) {
  return FindIsomorphism( 0 , W , f, G , XX , YY );
 }
 
-
+#endif

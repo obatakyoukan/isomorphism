@@ -48,7 +48,7 @@ int main(){
  end= clock();
  time = static_cast<double> (end-start) / CLOCKS_PER_SEC * 1.0;
  std::cout << "time = " << time << " [sec]" << std::endl;
-
+/*
  std::cout<<"Cert2"<<std::endl;
  g1 = graph( E1 );
  g2 = graph( E2 );
@@ -58,7 +58,7 @@ int main(){
  end= clock();
  time = static_cast<double> (end-start) / CLOCKS_PER_SEC * 1.0;
  std::cout << "time = " << time << " [sec]" << std::endl;
- 
+ */
  std::cout<<"Cert3"<<std::endl;
  g1 = graph( E1 );
  g2 = graph( E2 );
@@ -68,7 +68,7 @@ int main(){
  end= clock();
  time = static_cast<double> (end-start) / CLOCKS_PER_SEC * 1.0;
  std::cout << "time = " << time << " [sec]" << std::endl;
-
+/*
  std::cout<<"Cert4"<<std::endl;
  g1 = graph( E1 );
  g2 = graph( E2 );
@@ -78,7 +78,7 @@ int main(){
  end= clock();
  time = static_cast<double> (end-start) / CLOCKS_PER_SEC * 1.0;
  std::cout << "time = " << time << " [sec]" << std::endl;
-
+*/
 
  return 0;
 }

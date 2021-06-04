@@ -1,4 +1,5 @@
-
+#ifndef GRAPH_PRINT_HPP
+#define GRAPH_PRINT_HPP
 #include "graph.hpp"
 
 void graph::print_V() {
@@ -33,6 +34,4 @@ void graph::print() {
 }
 
 
-
-
-
+#endif

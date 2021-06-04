@@ -1,3 +1,5 @@
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
 
 #include <iostream>
 #include <vector>
@@ -43,3 +45,4 @@ void Vector::print() {
 }
 
 
+#endif

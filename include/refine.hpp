@@ -1,26 +1,28 @@
-
-
+#ifndef REFINE_HPP
+#define REFINE_HPP
+#include "graph.hpp"
 #include "graph_lib.hpp"
+#include "basic_function.hpp"
 
-// Algorithm 7.5
-std::map<int, std::set< int > > graph::REFINE( std::map<int, std::set< int > > &A ){
- std::map<int, std::set<int> > B = A;
- std::map<int, std::set<int> > S;
- for( auto i : B ){
-  S[ B.size() - 1 - i.first ] = i.second;
- }
+std::map< int, std::set<int> > graph::REFINE( std::map< int , std::set<int> > &A ){
+ std::map< int , std::set<int> > B = A;
+ std::map< int , std::set<int> > S;
+ for( auto it : B )
+  S[ B.size() - 1 - it.first ] = it.second;
 
  std::set< int > U , T;
  for( auto v : V ) U.insert( v );
  int N = B.size();
- while( N != 0 ){
+ while( N != 0 ) {
   N--;
   T = S[ N ];
-  if( SetInclude( T , U ) ){
-   SetDelete( U , T );
+  if( basic_function::SetInclude( T , U ) ){
+   basic_function::SetDelete( U , T );
    int j = 0;
    while( j < B.size() and B.size() < n ){
-    if( B.size() != 1 ) SpritAndUpdate( B , j , N , U ,S ,T );
+    if( B.size() != 1 ) {
+     SpritAndUpdate( B , j , N , U , S , T );
+    }
     j++;
    }
    if( B.size() == n ) return B;
@@ -29,9 +31,9 @@ std::map<int, std::set< int > > graph::REFINE( std::map<int, std::set< int > > &
  return B;
 }
 
-
 void graph::SpritAndUpdate( std::map< int,std::set<int> > &B , int j , 
   int &N , std::set< int >  &U, std::map< int,std::set< int > > &S, std::set< int > &T ) {
+
  std::map<int, std::set<int> > L;
  for( auto u : B[j] ){
   int h = AbsAndSet( u , T );
@@ -55,8 +57,8 @@ void graph::SpritAndUpdate( std::map< int,std::set<int> > &B , int j ,
   j += m - 1;
   N += m;
  }
-}
 
+}
 
 int graph::AbsAndSet( int u, std::set< int > &T ){
  int res = 0;
@@ -68,19 +70,4 @@ int graph::AbsAndSet( int u, std::set< int > &T ){
  return res;
 }
 
-//Algorithm 7.6
-CompResult graph::Compare( std::vector< int > &mu , std::vector< int > &pi, int l ){
- for(int j = 1 ; j < l ; j++ ){
-  for(int i = 0; i < j ; i++ ){
-   int x = is_edge( mu[i], mu[j] ) ? 1 : 0;
-   int y = is_edge( pi[i], pi[j] ) ? 1 : 0;
-   if( x < y ) return CompResult::Worse;
-   if( x > y ) return CompResult::Better;
-  }
- }
- return CompResult::Equal;
-}
-
-
-
-
+#endif

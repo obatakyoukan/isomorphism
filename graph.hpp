@@ -123,7 +123,9 @@ std::map<int, std::set< int > > graph::REFINE( std::map<int, std::set< int > > &
    SetDelete( U , T );
    int j = 0;
    while( j < B.size() and B.size() < n ){
-    if( B.size() != 1 ) SpritAndUpdate( B , j , N , U ,S ,T );
+    if( B.size() != 1 ) {
+     SpritAndUpdate( B , j , N , U ,S ,T );
+    }
     j++;
    }
    if( B.size() == n ) return B;
@@ -140,6 +142,7 @@ void graph::SpritAndUpdate( std::map< int,std::set<int> > &B , int j ,
   int h = AbsAndSet( u , T );
   L[h].insert( u );
  }
+ 
  int m = 0;
  for(int h = 0 ; h < n ; h++ )
   if( L[h].size() != 0 ) m++;

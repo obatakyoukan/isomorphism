@@ -1,6 +1,9 @@
-#include <algorithm>
+#ifndef ISOMORPHISM_BRUTE_FORCE_HPP
+#define ISOMORPHISM_BRUTE_FORCE_HPP
 
+#include <algorithm>
 #include "graph.hpp"
+#include "graph_lib.hpp"
 #include "graph_print.hpp"
 
 bool graph::compare( graph& G ){
@@ -25,4 +28,4 @@ bool graph::Isomorphism_Brute_Force( graph& G ) {
  return res;
 }
 
-
+#endif
