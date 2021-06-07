@@ -1,8 +1,7 @@
 CXX = g++
 CXXFLAGS =  -O3 -std=c++17 -Iinclude/ 
 DEBUGFLAGS = -Wall -O3 -std=c++17 -Iinclude/ 
-OBJDIR = obj
-EXECDIR = bin
+TARGETDIR = bin
 
 #.SUFFIXES: .cpp .o
 #.PHONY: all build clean
@@ -14,8 +13,7 @@ EXECDIR = bin
 
 
 clean:
-	rm $(EXECDIR)/*
-	rm $(OBJDIR)/*
+	rm $(TARGETDIR)/*
 
 
 
