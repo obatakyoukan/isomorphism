@@ -106,6 +106,32 @@ std::string graph::Cert3() {
  return s;
 }
 
+std::vector<int> graph::Cert1v() {
+ std::map<int , std::set<int> > P;
+ std::vector<int> mu( n );
+ iota( mu.begin() , mu.end() , 0 );
+ for(int i = 0 ; i < n ; i++ ) {
+  P[0].insert( i );
+ }
+ bool BestExist = false;
+ Canon1( P , mu , BestExist );
+ return mu;
+}
 
+std::vector<int> graph::Cert3v() {
+ std::map<int , std::set<int> > P;
+ std::vector<int> mu( n );
+ iota( mu.begin() , mu.end() , 0 );
+ std::map< std::tuple<int,Vector> , std::vector<int> > X = getPartitions();
+ int index = 0;
+ for( auto it : X ) {
+  for( auto v : it.second ) P[ index ].insert( v );
+  index++;
+ }
+
+ bool BestExist = false;
+ Canon1( P , mu , BestExist );
+ return mu;
+}
 
 #endif

@@ -56,6 +56,11 @@ class graph {
   std::string Cert4();
 
 
+  std::vector<int> Cert1v();
+  std::vector<int> Cert2v();
+  std::vector<int> Cert3v();
+  std::vector<int> Cert4v();
+
   void print();
   void print_V();
   void print_V_alphabet();

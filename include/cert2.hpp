@@ -147,4 +147,43 @@ std::string graph::Cert4() {
  return s;
 }
 
+std::vector<int> graph::Cert2v() {
+ std::map<int , std::set<int> > P;
+ std::vector<int> mu( n );
+ iota( mu.begin() , mu.end() , 0 );
+ for(int i = 0 ; i < n ; i++ ) {
+  P[0].insert( i );
+ }
+ bool BestExist = false;
+ std::vector< int > Ip(n);
+ iota( Ip.begin() , Ip.end() , 0 );
+ permutation I( Ip );
+ std::vector< std::set< permutation > > G(n);
+ for( int i = 0 ; i < n ; i++ ) G[i].insert( I );
+ Canon2( I , G , P , mu , BestExist );
+ return mu;
+}
+
+std::vector<int> graph::Cert4v() {
+ std::map<int , std::set<int> > P;
+ std::vector<int> mu( n );
+ iota( mu.begin() , mu.end() , 0 );
+ std::map< std::tuple<int,Vector> , std::vector<int> > X = getPartitions();
+ int index = 0;
+ for( auto it : X ) {
+  for( auto v : it.second ) P[ index ].insert( v );
+  index++;
+ }
+ bool BestExist = false;
+ std::vector< int > Ip(n);
+ iota( Ip.begin() , Ip.end() , 0 );
+ permutation I( Ip );
+ std::vector< std::set< permutation > > G(n);
+ for( int i = 0 ; i < n ; i++ ) G[i].insert( I );
+ Canon2( I , G , P , mu , BestExist );
+ return mu;
+}
+
+
+
 #endif
