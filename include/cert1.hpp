@@ -83,10 +83,17 @@ std::string graph::Cert3() {
  iota( mu.begin() , mu.end() , 0 );
  std::map< std::tuple<int,Vector> , std::vector<int> > X = getPartitions();
  int index = 0;
+
+ std::cerr << "GetPartitions() :";
  for( auto it : X ) {
   for( auto v : it.second ) P[ index ].insert( v );
   index++;
+  //Output
+  std::cerr <<" {";
+  for( auto v : it.second ) std::cerr << " " << v ;
+  std::cerr <<" }";
  }
+ std::cerr << std::endl;
 
  bool BestExist = false;
  Canon1( P , mu , BestExist );
