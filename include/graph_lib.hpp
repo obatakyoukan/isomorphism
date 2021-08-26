@@ -1,7 +1,7 @@
 #ifndef GRAPH_LIB_HPP
 #define GRAPH_LIB_HPP
 
-#include "graph_lib.hpp"
+#include "graph.hpp"
 
 std::map< std::tuple<int,Vector> , std::vector<int> > graph::getPartitions() {
  std::map< std::tuple<int, Vector > , std::vector<int> > res;
